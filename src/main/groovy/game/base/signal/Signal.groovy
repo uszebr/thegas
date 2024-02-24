@@ -1,4 +1,4 @@
-package game.base
+package game.base.signal
 
 enum Signal {
 GREEN("Cooperation"),
