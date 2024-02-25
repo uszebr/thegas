@@ -1,8 +1,8 @@
 package game.base.signal
 
 enum Signal {
-GREEN("Cooperation"),
-RED("Confrontation")
+    GREEN("Cooperation"),
+    RED("Confrontation")
 
     String description
 

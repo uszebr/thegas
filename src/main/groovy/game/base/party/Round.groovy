@@ -1,4 +1,4 @@
-package game.base.round
+package game.base.party
 
 import game.base.signal.Signal
 
@@ -13,6 +13,7 @@ class Round {
 
     private int scoreLeft
     private int scoreRight
+
 
     private boolean roundFinished = false
 
@@ -39,5 +40,7 @@ class Round {
     int getScoreRight() {
         return scoreRight
     }
-
+    boolean isRoundFinished() {
+        return roundFinished
+    }
 }

@@ -1,23 +1,20 @@
 package game.base.party
-
-import game.base.round.Round
-
 /**
  * Can set max and min quantity of rounds in the RoundLine, every time party will have random rounds quantity
  */
-class RoundLine implements Iterable<Round> {
-    Round[] rounds
+class RoundLine {
+    List<Round> rounds
 
     static final int MIN_PARTY_ROUNDS_DEFAULT = 180
     static final int MAX_PARTY_ROUNDS_DEFAULT = 220
     static final Random random = new Random()
 
+    // Included and min and max
     Integer minPartyRounds
     Integer maxPartyRounds
 
     // not shown to player
     private Integer roundQuantity
-    private Integer currentRoundIndex
 
 
     RoundLine(Integer minPartyRounds, Integer maxPartyRounds) {
@@ -34,29 +31,32 @@ class RoundLine implements Iterable<Round> {
 
     void setUp() {
         roundQuantity = generateRoundQuantity()
-        currentRoundIndex = 0
-        rounds = new Round[roundQuantity]
-        // filling up rounds
-        for (int i = 0; i < roundQuantity; i++) {
-            rounds[i] = new Round()
+        rounds = new ArrayList<>()
+    }
+
+    boolean canGetRound(){
+        return rounds.size() < roundQuantity
+    }
+
+    Round getNewRound(){
+        if(!canGetRound()){
+           throw new Exception("Party can't get new round. Rounds quantity: [${rounds.size()}] rounds possible: [${roundQuantity}]")
         }
+        if(!rounds.last().isRoundFinished()){
+            throw new Exception("Party can't get new round. Last round is not finished")
+        }
+        Round round = new Round()
+        rounds.add(round)
+        return round
     }
 
-
-    Integer getCurrentRoundIndex() {
-        return currentRoundIndex
-    }
 
     private generateRoundQuantity() {
         if (minPartyRounds == maxPartyRounds) {
-            return  minPartyRounds
+            return minPartyRounds
         }
-        roundQuantity = random.nextInt(maxPartyRounds - minPartyRounds) + minPartyRounds
+        roundQuantity = random.nextInt(maxPartyRounds - minPartyRounds+1) + minPartyRounds
     }
 
-    @Override
-    Iterator<Round> iterator() {
-        return rounds.iterator()
-    }
 
 }
