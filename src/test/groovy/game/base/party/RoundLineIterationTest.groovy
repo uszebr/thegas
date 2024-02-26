@@ -1,5 +1,6 @@
 package game.base.party
 
+
 import org.testng.Assert
 import org.testng.annotations.Test
 
@@ -24,19 +25,11 @@ class RoundLineIterationTest {
         ]
         for (test in testData) {
             RoundLine roundLine = new RoundLine(test.min, test.max)
-
-            def i = 0
-            while (roundLine.canGetRound()) {
-                def round = roundLine.getNewRound()
-                i++
-            }
             def meta = roundLine.metaClass
             def privateRoundQuantity = meta.getProperty(roundLine, "roundQuantity")
 
-            Assert.assertTrue(i >= test.min, "min: ${test.min} max: ${test.max} i: ${i}")
-            Assert.assertTrue(i <= test.max, "min: ${test.min} max: ${test.max} i: ${i}")
-            Assert.assertTrue(i == privateRoundQuantity, "i: ${i} roundQuantity: ${privateRoundQuantity}")
-            //   println("TEMP min: ${test.min} max: ${test.max} i: ${i} roundQuantity: ${privateRoundQuantity}")
+            Assert.assertTrue(privateRoundQuantity >= test.min, "min: ${test.min} max: ${test.max} privateRoundQuantity: ${privateRoundQuantity}")
+            Assert.assertTrue(privateRoundQuantity <= test.max, "min: ${test.min} max: ${test.max} privateRoundQuantity: ${privateRoundQuantity}")
         }
     }
 

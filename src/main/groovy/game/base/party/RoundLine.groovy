@@ -14,6 +14,7 @@ class RoundLine {
     Integer maxPartyRounds
 
     // not shown to player
+    //todo switch to private after debug!!
     private Integer roundQuantity
 
 
@@ -34,15 +35,15 @@ class RoundLine {
         rounds = new ArrayList<>()
     }
 
-    boolean canGetRound(){
+    boolean canGetRound() {
         return rounds.size() < roundQuantity
     }
 
-    Round getNewRound(){
-        if(!canGetRound()){
-           throw new Exception("Party can't get new round. Rounds quantity: [${rounds.size()}] rounds possible: [${roundQuantity}]")
+    Round getNewRound() {
+        if (!canGetRound()) {
+            throw new Exception("Party can't get new round. Rounds quantity: [${rounds.size()}] rounds possible: [${roundQuantity}]")
         }
-        if(!rounds.last().isRoundFinished()){
+        if (rounds.size() > 0 && !rounds.last().isRoundFinished()) {
             throw new Exception("Party can't get new round. Last round is not finished")
         }
         Round round = new Round()
@@ -55,8 +56,22 @@ class RoundLine {
         if (minPartyRounds == maxPartyRounds) {
             return minPartyRounds
         }
-        roundQuantity = random.nextInt(maxPartyRounds - minPartyRounds+1) + minPartyRounds
+        roundQuantity = random.nextInt(maxPartyRounds - minPartyRounds + 1) + minPartyRounds
     }
 
+    String preparePrintableResult() {
+        StringBuilder sb0 = new StringBuilder()
+        StringBuilder sb1 = new StringBuilder()
+        for (Round round in rounds) {
+            sb0.append(round.signalsToString())
+            sb0.append('|')
+            sb1.append(round.scoresToString())
+            sb1.append('|')
+        }
+        return sb0.toString() + '\n' + sb1.toString()
+    }
 
+    List<Round> getUnmodifiedRounds() {
+        return Collections.unmodifiableList(this.rounds)
+    }
 }
